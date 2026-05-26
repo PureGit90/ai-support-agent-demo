@@ -380,7 +380,7 @@ with tab3:
         }
         return colors.get(val, "")
 
-    styled = df.style.applymap(color_type, subset=["Failure Type"])
+    styled = df.style.map(color_type, subset=["Failure Type"])
     st.dataframe(styled, use_container_width=True, hide_index=True)
 
     st.markdown("---")
