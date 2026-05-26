@@ -263,17 +263,20 @@ with tab1:
             ["(none — I'll paste my own)"] + list(EXAMPLE_CONVERSATIONS.keys()),
             key="example_select",
         )
+        # Sync dropdown change into the text area's session state key
+        if selected_example != "(none — I'll paste my own)":
+            if st.session_state.get("_last_example_select") != selected_example:
+                st.session_state["conversation_text"] = EXAMPLE_CONVERSATIONS[selected_example]
+                st.session_state["_last_example_select"] = selected_example
+        else:
+            if st.session_state.get("_last_example_select") is not None:
+                st.session_state["conversation_text"] = ""
+                st.session_state["_last_example_select"] = None
 
     with col_right:
         st.markdown("#### Or paste a conversation")
-        if selected_example != "(none — I'll paste my own)":
-            default_text = EXAMPLE_CONVERSATIONS[selected_example]
-        else:
-            default_text = ""
-
         conversation_input = st.text_area(
             "Paste the full conversation transcript here:",
-            value=default_text,
             height=320,
             key="conversation_text",
             placeholder="Customer: ...\nAI Agent: ...\nCustomer: ...",
